@@ -2,6 +2,10 @@
 
 This project provides a Dockerized version of [iVentoy](https://www.iventoy.com/en/index.html), a PXE server for booting ISO files over the network. 
 
+## Important Notes
+- This is only a wrapper for the iVentoy software to run inside docker container. I not related to the iVentoy project.
+- Currently `iVentoy` only supports `x64` platform, therefore there is only a docker image for `linux/amd64`. 
+
 ## Usage
 You can run the container with Docker by using the following command:
 ```bash
