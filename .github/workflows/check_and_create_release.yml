@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: '0 */4 * * *' # runs every 4 hours
 
+permissions:
+  contents: write
+
 jobs:
   sync-release:
     runs-on: ubuntu-latest
