@@ -20,14 +20,14 @@ jobs:
         name: Get latest release from upstream
         id: upstream
         run: |
-          UPSTREAM_VERSION=$(curl -s https://api.github.com/repos/ventoy/PXE/releases/latest | jq -r .tag_name)
+          UPSTREAM_VERSION=$(curl -s https://api.github.com/repos/ventoy/PXE/releases/latest | jq -r .tag_name | sed 's/^v//')
           echo "upstream_version=$UPSTREAM_VERSION" >> $GITHUB_OUTPUT
 
       - 
         name: Get latest release from this repo
         id: local
         run: |
-          LOCAL_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' || echo "")
+          LOCAL_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' | sed 's/^v//' || echo "")
           echo "local_version=$LOCAL_VERSION" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
