@@ -1,0 +1,35 @@
+---
+name: Sync Release With Upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */4 * * *' # runs every 4 hours
+
+jobs:
+  sync-release:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Get latest release from upstream
+        id: upstream
+        run: |
+          UPSTREAM_VERSION=$(curl -s https://api.github.com/repos/ventoy/PXE/releases/latest | jq -r .tag_name)
+          echo "upstream_version=$UPSTREAM_VERSION" >> $GITHUB_OUTPUT
+
+      - 
+        name: Get latest release from this repo
+        id: local
+        run: |
+          LOCAL_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' || echo "")
+          echo "local_version=$LOCAL_VERSION" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - 
+        name: Create release if versions differ
+        if: steps.upstream.outputs.upstream_version != steps.local.outputs.local_version
+        run: |
+          gh release create "${{ steps.upstream.outputs.upstream_version }}" --title "${{ steps.upstream.outputs.upstream_version }}" --notes "Automated sync with upstream release"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
