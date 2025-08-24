@@ -38,4 +38,4 @@ jobs:
         run: |
           gh release create "${{ steps.upstream.outputs.upstream_version }}" --title "${{ steps.upstream.outputs.upstream_version }}" --notes "Automated sync with upstream release"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_GH_TOKEN }}
