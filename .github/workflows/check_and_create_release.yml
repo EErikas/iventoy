@@ -4,7 +4,7 @@ name: Sync Release With Upstream
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */4 * * *' # runs every 4 hours
+    - cron: '0 0 * * 0' # runs once a week (Sunday at 00:00 UTC)
 
 permissions:
   contents: write
@@ -34,7 +34,9 @@ jobs:
 
       - 
         name: Create release if versions differ
-        if: steps.upstream.outputs.upstream_version != steps.local.outputs.local_version
+        if: >
+          steps.upstream.outputs.upstream_version != steps.local.outputs.local_version &&
+          steps.upstream.outputs.upstream_version != null
         run: |
           gh release create "${{ steps.upstream.outputs.upstream_version }}" --title "${{ steps.upstream.outputs.upstream_version }}" --notes "Automated sync with upstream release"
         env:

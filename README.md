@@ -50,7 +50,7 @@ There is also a sample compose file in the repository
 ## Development
 
 - The build process is automated via GitHub Actions.
-- The existance of new release is checked every 4 hours
+- The existance of new release is checked once a week on Sunday 00:00 UTC
 - On every new release, the workflow downloads the latest iVentoy files, builds the Docker image, and publishes it to GitHub Container Registry.
 
 
